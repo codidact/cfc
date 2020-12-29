@@ -8,7 +8,7 @@ module Cloudflare
     end
 
     def include?(key)
-      @cache.include?(key) && (@cache[key].expiry >= DateTime.now.to_time.to_i || @cache[key].expiry.nil?)
+      @cache.include?(key) && (@cache[key].expiry.nil? || @cache[key].expiry >= DateTime.now.to_time.to_i)
     end
 
     def [](key)
