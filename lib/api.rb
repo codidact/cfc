@@ -28,25 +28,10 @@ module Cloudflare
       end
 
       define_method "#{method}_to_json" do |path, data, headers: nil, cache: false, expiry: nil|
-        request_json("Net::HTTP::#{method.capitalize}".constantize, URI("#{@base}#{path}"), data: data, headers: headers, cache: cache, expiry: expiry)
+        request_json(Object.const_get("Net::HTTP::#{method.capitalize}"), URI("#{@base}#{path}"), data: data, headers: headers, cache: cache,
+                     expiry: expiry)
       end
     end
-
-    # def post(path, data, headers: nil, cache: false, expiry: nil)
-    #   request(Net::HTTP::Post, URI("#{@base}#{path}"), data: data, headers: headers, cache: cache, expiry: expiry)
-    # end
-
-    # def post_to_json(path, data, headers: nil, cache: false, expiry: nil)
-    #   request_json(Net::HTTP::Post, URI("#{@base}#{path}"), data: data, headers: headers, cache: cache, expiry: expiry)
-    # end
-
-    # def put(path, data, headers: nil, cache: false, expiry: nil)
-    #   request(Net::HTTP::Put, URI("#{@base}#{path}"), data: data, headers: headers, cache: cache, expiry: expiry)
-    # end
-
-    # def put_to_json(path, data, headers: nil, cache: false, expiry: nil)
-    #   request_json(Net::HTTP::Put, URI("#{@base}#{path}"), data: data, headers: headers, cache: cache, expiry: expiry)
-    # end
 
     protected
 
