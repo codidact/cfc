@@ -2,16 +2,15 @@ require 'net/http'
 require 'json'
 require 'digest'
 require 'yaml'
+require_relative 'config'
 require_relative 'cache'
 require_relative 'errors/http_error.rb'
 
-module Cloudflare
+module CFC
   class API
     def initialize
-      @config = YAML.load_file(File.join(File.dirname(__FILE__), 'config.yml'))
       @base = 'https://api.cloudflare.com/client/v4/'
-      @token = @config['token']
-      @cache = Cloudflare::Cache.new
+      @cache = CFC::Cache.new
     end
 
     def get(path, params: nil, headers: nil, cache: true, expiry: nil)
@@ -37,7 +36,7 @@ module Cloudflare
 
     def request(cls, uri, data: nil, headers: nil, cache: true, expiry: nil)
       final_headers = (headers || {}).merge({
-        'Authorization' => "Bearer #{@token}",
+        'Authorization' => "Bearer #{CFC::Config.instance.token}",
         'Content-Type' => 'application/json'
       })
 
@@ -59,7 +58,7 @@ module Cloudflare
       if response.is_a?(Net::HTTPSuccess)
         response
       else
-        raise Cloudflare::Errors::HTTPError.new(rq, response)
+        raise CFC::Errors::HTTPError.new(rq, response)
       end
     end
 

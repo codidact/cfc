@@ -1,5 +1,5 @@
-module Cloudflare
-  class Record < Cloudflare::APIObject
+module CFC
+  class Record < CFC::APIObject
     def initialize(data)
       super(data)
     end

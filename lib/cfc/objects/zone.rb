@@ -3,12 +3,12 @@ require_relative 'user'
 require_relative 'account'
 require_relative 'record'
 
-module Cloudflare
-  class Zone < Cloudflare::APIObject
-    relationship :owner, Cloudflare::User
-    relationship :account, Cloudflare::Account
+module CFC
+  class Zone < CFC::APIObject
+    relationship :owner, CFC::User
+    relationship :account, CFC::Account
 
-    @api = Cloudflare::API.new
+    @api = CFC::API.new
 
     def self.list
       data = @api.get_json('zones')['result']
@@ -25,7 +25,7 @@ module Cloudflare
 
     def records
       data = @api.get_json("zones/#{id}/dns_records")['result']
-      data.map { |r| Cloudflare::Record.new(r) }
+      data.map { |r| CFC::Record.new(r) }
     end
   end
 end

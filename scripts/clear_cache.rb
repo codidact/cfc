@@ -7,13 +7,23 @@
 # network and related assets. If you don't know what that means, ask someone
 # who does before running this script.
 #
+# Relies on the existence of config.yml containing a Cloudflare API token.
+# There's a sample config file with the correct keys in config.sample.yml.
+#
 # RUN:
 # $ ruby clear_cache.rb
 ################################################################################
 
-require_relative '../lib/objects/zone'
+require 'yaml'
+require_relative '../lib/cfc/objects/zone'
 
-zones = Cloudflare::Zone.list
+cfg = YAML.load_file(File.join(__dir__, 'config.yml'))
+
+CFC::Config.configure do |config|
+  config.token = cfg['token']
+end
+
+zones = CFC::Zone.list
 codidact_zones = zones.select { |z| z.name.start_with?('codidact') && z.account.name == 'Codidact DNS' }
 results = codidact_zones.map do |z|
   [z.name, z.purge_all_files]

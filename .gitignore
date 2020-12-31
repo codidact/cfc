@@ -1,1 +1,4 @@
-lib/config.yml
+test/test.rb
+*.gem
+scripts/config.yml
+.idea

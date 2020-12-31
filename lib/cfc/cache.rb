@@ -1,7 +1,7 @@
 require 'ostruct'
 require 'date'
 
-module Cloudflare
+module CFC
   class Cache
     def initialize
       @cache = {}

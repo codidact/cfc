@@ -1,7 +1,7 @@
 require_relative 'object'
 
-module Cloudflare
-  class Account < Cloudflare::APIObject
+module CFC
+  class User < CFC::APIObject
     def initialize(data)
       super(data)
     end

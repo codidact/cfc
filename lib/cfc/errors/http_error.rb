@@ -1,6 +1,6 @@
 require 'json'
 
-module Cloudflare
+module CFC
   module Errors
     class HTTPError < StandardError
       attr_reader :request, :response

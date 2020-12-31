@@ -1,18 +1,28 @@
-# cf
+# cfc
 Simple library for interacting with the Cloudflare API.
 
 ## Install
-Clone the repository. That's it!
+```
+gem install cfc
+```
+
+If you're installing for development/contribution, just clone the repository.
 
 ## Usage
-This library is intended to be very lightweight, to help with usage in quick but effective scripts. Scripts that use
-this library can be added to `scripts/` and run from there&mdash;it's *possible* for them to go anywhere, of course,
-but relative `require`s are easier from a proximate directory.
+Once you've `require`d the gem, you _must_ then configure it with required credentials before you can use it. You can do
+this by calling `CFC::Config.configure`, as shown below. You must provide a valid API token for the gem to use in API
+requests.
 
-You can use the library either by instantiating `Cloudflare::API` and using that class to send API requests directly,
+```ruby
+CFC::Config.configure do |config|
+  config.token = 'your_api_token_here'
+end
+```
+
+You can then use the library either by instantiating `CFC::API` and using that class to send API requests directly,
 or, for simpler tasks, you can use pre-provided objects in `lib/objects/`, which represent a data type from the
 Cloudflare API and may provide methods to perform common or simple tasks on those types. See
-`lib/scripts/clear_cache.rb` for an example of how this may be done using `Cloudflare::Zone` objects.
+`lib/scripts/clear_cache.rb` for an example of how this may be done with `CFC::Zone` objects.
 
 ## Contributing
 As with all Codidact projects, contributions are welcome and must adhere to the
