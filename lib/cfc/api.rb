@@ -11,6 +11,7 @@ module CFC
     def initialize
       @base = 'https://api.cloudflare.com/client/v4/'
       @cache = CFC::Cache.new
+      @auth_method = !CFC::Config.instance.token.nil? ? :token : :key
     end
 
     def get(path, params: nil, headers: nil, cache: true, expiry: nil)
@@ -35,19 +36,25 @@ module CFC
     protected
 
     def request(cls, uri, data: nil, headers: nil, cache: true, expiry: nil)
-      final_headers = (headers || {}).merge({
-        'Authorization' => "Bearer #{CFC::Config.instance.token}",
-        'Content-Type' => 'application/json'
-      })
+      headers = (headers || {}).merge({ 'Content-Type' => 'application/json' })
 
-      rq = cls.new(uri, final_headers)
+      if @auth_method == :token
+        headers.merge!({ 'Authentication' => "Bearer #{CFC::Config.instance.token}" })
+      elsif @auth_method == :key
+        headers.merge!({
+          'X-Auth-Key' => CFC::Config.instance.api_key,
+          'X-Auth-Email' => CFC::Config.instance.api_email
+        })
+      end
+
+      rq = cls.new(uri, headers)
       unless data.nil? || rq.is_a?(Net::HTTP::Head)
         rq.body = JSON.dump(data)
       end
 
       response = Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
         if cache
-          @cache.fetch(Digest::SHA256.hexdigest("#{uri}|#{JSON.dump(final_headers)}"), expiry: expiry) do
+          @cache.fetch(Digest::SHA256.hexdigest("#{uri}|#{JSON.dump(headers)}"), expiry: expiry) do
             http.request(rq)
           end
         else
