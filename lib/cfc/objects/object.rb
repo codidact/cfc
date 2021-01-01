@@ -36,19 +36,29 @@ module CFC
 
     protected
 
-    def self.relationship(property, cls)
+    def self.relationship(property, cls, multiple: false)
       unless defined?(@relationships)
         @relationships = []
       end
-      @relationships << [property, cls]
+      @relationships << [property, cls, { multiple: multiple }]
+    end
+
+    def self.opts(bind)
+      bind.local_variables.map do |var|
+        [var, bind.local_variable_get(var)]
+      end.to_h
     end
 
     private
 
     def initialize_relationships
       (self.class.relationships || []).each do |rel|
-        property, cls = rel
-        @data[property.to_s] = cls.new(@data[property.to_s])
+        property, cls, opts = rel
+        @data[property.to_s] = if opts[:multiple]
+                                 @data[property.to_s].map { |o| cls.new(o) }
+                               else
+                                 cls.new(@data[property.to_s])
+                               end
       end
     end
   end

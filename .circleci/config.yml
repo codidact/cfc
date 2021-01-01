@@ -1,0 +1,69 @@
+version: 2.1
+jobs:
+  test:
+    docker:
+      - image: circleci/ruby:2.6.6
+
+    working_directory: ~/cfc
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - cfc-{{ checksum "Gemfile" }}
+            - cfc-
+      - run:
+          name: Install Bundler & gems
+          command: |
+            gem install bundler
+            bundle install --path=~/gems
+      - save_cache:
+          key: cfc-{{ checksum "Gemfile" }}
+          paths:
+            - ~/gems
+      - run:
+          name: Rubocop
+          command: |
+            bundle exec rubocop
+
+  build_gem:
+    docker:
+      - image: circleci/ruby:2.6.6
+
+    working_directory: ~/cfc
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - cfc-{{ checksum "Gemfile" }}
+            - cfc-
+      - run:
+          name: Install Bundler & gems
+          command: |
+            gem install bundler
+            bundle install --path=~/gems
+      - save_cache:
+          key: cfc-{{ checksum "Gemfile" }}
+          paths:
+            - ~/gems
+      - run:
+          name: Save credentials
+          command: |
+            echo "$GEM_CREDENTIALS" > ~/.gem/credentials
+      - run:
+          name: Build gem
+          command: |
+            gem build cfc.gemspec
+      - run:
+          name: Push gem
+          command: |
+            gem push *.gem || exit 0
+
+workflows:
+  test_lint:
+    jobs:
+      - test
+      - build_gem
+          requires:
+            - test

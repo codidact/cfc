@@ -1,3 +1,5 @@
+require_relative 'object'
+
 module CFC
   class Record < CFC::APIObject
     def initialize(data)

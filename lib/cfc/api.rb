@@ -11,7 +11,6 @@ module CFC
     def initialize
       @base = 'https://api.cloudflare.com/client/v4/'
       @cache = CFC::Cache.new
-      @auth_method = !CFC::Config.instance.token.nil? ? :token : :key
     end
 
     def get(path, params: nil, headers: nil, cache: true, expiry: nil)
@@ -37,6 +36,7 @@ module CFC
 
     def request(cls, uri, data: nil, headers: nil, cache: true, expiry: nil)
       headers = (headers || {}).merge({ 'Content-Type' => 'application/json' })
+      @auth_method = !CFC::Config.instance.token.nil? ? :token : :key
 
       if @auth_method == :token
         headers.merge!({ 'Authentication' => "Bearer #{CFC::Config.instance.token}" })
