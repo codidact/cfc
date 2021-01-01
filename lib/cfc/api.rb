@@ -4,7 +4,7 @@ require 'digest'
 require 'yaml'
 require_relative 'config'
 require_relative 'cache'
-require_relative 'errors/http_error.rb'
+require_relative 'errors/http_error'
 
 module CFC
   class API
@@ -23,12 +23,13 @@ module CFC
 
     [:post, :put, :patch].each do |method|
       define_method method do |path, data, headers: nil, cache: false, expiry: nil|
-        request("Net::HTTP::#{method.capitalize}".constantize, URI("#{@base}#{path}"), data: data, headers: headers, cache: cache, expiry: expiry)
+        request("Net::HTTP::#{method.capitalize}".constantize, URI("#{@base}#{path}"), data: data, headers: headers,
+                cache: cache, expiry: expiry)
       end
 
       define_method "#{method}_to_json" do |path, data, headers: nil, cache: false, expiry: nil|
-        request_json(Object.const_get("Net::HTTP::#{method.capitalize}"), URI("#{@base}#{path}"), data: data, headers: headers, cache: cache,
-                     expiry: expiry)
+        request_json(Object.const_get("Net::HTTP::#{method.capitalize}"), URI("#{@base}#{path}"), data: data,
+                     headers: headers, cache: cache, expiry: expiry)
       end
     end
 
@@ -36,15 +37,16 @@ module CFC
 
     def request(cls, uri, data: nil, headers: nil, cache: true, expiry: nil)
       headers = (headers || {}).merge({ 'Content-Type' => 'application/json' })
-      @auth_method = !CFC::Config.instance.token.nil? ? :token : :key
+      @auth_method = CFC::Config.instance.token.nil? ? :key : :token
 
-      if @auth_method == :token
+      case @auth_method
+      when :token
         headers.merge!({ 'Authentication' => "Bearer #{CFC::Config.instance.token}" })
-      elsif @auth_method == :key
+      when :key
         headers.merge!({
-          'X-Auth-Key' => CFC::Config.instance.api_key,
+                         'X-Auth-Key' => CFC::Config.instance.api_key,
           'X-Auth-Email' => CFC::Config.instance.api_email
-        })
+                       })
       end
 
       rq = cls.new(uri, headers)

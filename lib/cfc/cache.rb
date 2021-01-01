@@ -37,6 +37,6 @@ module CFC
       end
     end
 
-    alias_method :valid?, :include?
+    alias valid? include?
   end
 end

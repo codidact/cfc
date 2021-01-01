@@ -7,12 +7,6 @@ module CFC
 
     @api = CFC::API.new
 
-    def initialize(data)
-      super(data)
-    end
-
-    def self.list(page:, per_page:, direction:)
-
-    end
+    def self.list(page:, per_page:, direction:); end
   end
 end

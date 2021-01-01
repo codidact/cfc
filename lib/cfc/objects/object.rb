@@ -5,8 +5,8 @@ module CFC
   class APIObject
     @relationships = []
 
-    def self.relationships
-      @relationships
+    class << self
+      attr_reader :relationships
     end
 
     def initialize(data)
@@ -23,7 +23,7 @@ module CFC
               CFC::Errors::MissingProperty.default_message(self, name)
       end
     end
-    
+
     def respond_to_missing?(name, *_args, **_opts)
       @data.include?(name.to_s)
     end
@@ -32,9 +32,7 @@ module CFC
       "#<#{self.class.name}:0x#{(object_id << 1).to_s(16)} #{@data.map { |k, v| "#{k}=#{v.inspect}" }.join(', ')}>"
     end
 
-    alias_method :to_s, :inspect
-
-    protected
+    alias to_s inspect
 
     def self.relationship(property, cls, multiple: false)
       unless defined?(@relationships)

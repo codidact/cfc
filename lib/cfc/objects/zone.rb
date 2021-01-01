@@ -15,10 +15,6 @@ module CFC
       data.map { |z| new(z) }
     end
 
-    def initialize(data)
-      super(data)
-    end
-
     def purge_all_files
       @api.post_to_json("zones/#{id}/purge_cache", { purge_everything: true })
     end

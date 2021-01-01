@@ -4,10 +4,6 @@ module CFC
   class User < CFC::APIObject
     @api = CFC::API.new
 
-    def initialize(data)
-      super(data)
-    end
-
     # Get full details of the current user.
     def self.details
       new(@api.get_json('user')['result'])

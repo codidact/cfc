@@ -2,10 +2,6 @@ require_relative 'object'
 
 module CFC
   class Record < CFC::APIObject
-    def initialize(data)
-      super(data)
-    end
-
     def proxy
       set_proxied(true)
     end
@@ -16,7 +12,7 @@ module CFC
 
     private
 
-    def set_proxied(to)
+    def set_proxied(to) # rubocop:disable Naming/AccessorMethodName
       @api.patch_to_json("zones/#{zone_id}/dns_records/#{id}", { proxied: to })
     end
   end

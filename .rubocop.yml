@@ -1,7 +1,7 @@
 # This file is maintained in alphabetic order by class name (Layout, Metrics, Style) first, then by key name.
 
 AllCops:
-  TargetRubyVersion: 2.6
+  TargetRubyVersion: 2.4
   Exclude:
     - 'config/**/*'
     - 'db/**/*'
@@ -42,6 +42,8 @@ Metrics/MethodLength:
   Max: 60
 Metrics/ModuleLength:
   Max: 200
+Metrics/ParameterLists:
+  Max: 10
 Metrics/PerceivedComplexity:
   Enabled: false
 
