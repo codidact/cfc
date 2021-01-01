@@ -61,9 +61,9 @@ jobs:
             gem push *.gem || exit 0
 
 workflows:
-  test_lint:
+  test_push:
     jobs:
       - test
-      - build_gem
+      - build_gem:
           requires:
             - test
