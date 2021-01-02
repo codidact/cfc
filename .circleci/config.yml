@@ -50,7 +50,8 @@ jobs:
       - run:
           name: Save credentials
           command: |
-            echo "$GEM_CREDENTIALS" > ~/.gem/credentials && chmod 0600 ~/.gem/credentials
+            echo $(echo $GEM_CREDENTIALS | base64 -d) > ~/.gem/credentials
+            chmod 0600 ~/.gem/credentials
       - run:
           name: Build gem
           command: |
