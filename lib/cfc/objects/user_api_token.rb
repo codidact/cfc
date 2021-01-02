@@ -8,7 +8,7 @@ module CFC
     @api = CFC::API.new
 
     def self.list(page: nil, per_page: nil, direction: nil)
-      params = opts(binding).reject { |_k, v| v.nil? }
+      params = opts(binding).compact
       @api.get_json('user/tokens', params: params)['result'].map { |o| new(o) }
     end
 
