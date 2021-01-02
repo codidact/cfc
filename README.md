@@ -19,10 +19,39 @@ CFC::Config.configure do |config|
 end
 ```
 
+Alternatively, you can authenticate with your API key and email address:
+
+```ruby
+CFC::Config.configure do |config|
+  config.api_key = 'your_api_key_here'
+  config.api_email = 'your_email_here'
+end
+```
+
 You can then use the library either by instantiating `CFC::API` and using that class to send API requests directly,
-or, for simpler tasks, you can use pre-provided objects in `lib/objects/`, which represent a data type from the
-Cloudflare API and may provide methods to perform common or simple tasks on those types. See
-`lib/scripts/clear_cache.rb` for an example of how this may be done with `CFC::Zone` objects.
+or, you can use pre-provided objects in `lib/objects/`, which represent a data type from the Cloudflare API and may
+provide methods to perform common or simple tasks on those types. For instance, to list DNS records in all zones you
+administer (assuming you've already configured the gem as above):
+
+```ruby
+CFC::Zone.list.each do |zone|
+  puts zone.records
+end
+```
+
+Or if you need to roll all of your current API tokens:
+
+```ruby
+new_tokens = CFC::UserAPIToken.list.each do |token|
+  token.roll['result']
+end
+
+# Once you've rolled tokens, of course, your existing token won't work, so you
+# probably want to update that.
+CFC::Config.configure do |config|
+  config.token = new_tokens[0]
+end
+```
 
 ## Contributing
 As with all Codidact projects, contributions are welcome and must adhere to the
