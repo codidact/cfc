@@ -7,6 +7,33 @@ module CFC
 
     @api = CFC::API.new
 
-    def self.list(page:, per_page:, direction:); end
+    def self.list(page: nil, per_page: nil, direction: nil)
+      params = opts(binding).reject { |_k, v| v.nil? }
+      @api.get_json('user/tokens', params: params)['result'].map { |o| new(o) }
+    end
+
+    def self.details(identifier)
+      new(@api.get_json("user/tokens/#{identifier}")['result'])
+    end
+
+    def self.delete(identifier)
+      @api.delete_to_json("user/tokens/#{identifier}")
+    end
+
+    def self.roll(identifier)
+      @api.put_to_json("user/tokens/#{identifier}/value", {})
+    end
+
+    def details
+      CFC::UserAPIToken.details(id)
+    end
+
+    def delete
+      CFC::UserAPIToken.delete(id)
+    end
+
+    def roll
+      CFC::UserAPIToken.roll(id)
+    end
   end
 end

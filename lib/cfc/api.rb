@@ -21,6 +21,15 @@ module CFC
       request_json(Net::HTTP::Get, build_uri(path, params), headers: headers, cache: cache, expiry: expiry)
     end
 
+    def delete(path, data: {}, headers: nil, cache: false, expiry: nil)
+      request(Net::HTTP::Delete, URI("#{@base}#{path}"), data: data, headers: headers, cache: cache, expiry: expiry)
+    end
+
+    def delete_to_json(path, data: {}, headers: nil, cache: false, expiry: nil)
+      request_json(Net::HTTP::Delete, URI("#{@base}#{path}"), data: data, headers: headers, cache: cache,
+                   expiry: expiry)
+    end
+
     [:post, :put, :patch].each do |method|
       define_method method do |path, data, headers: nil, cache: false, expiry: nil|
         request("Net::HTTP::#{method.capitalize}".constantize, URI("#{@base}#{path}"), data: data, headers: headers,
