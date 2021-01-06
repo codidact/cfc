@@ -34,6 +34,16 @@ module CFC
 
     alias to_s inspect
 
+    def to_h
+      @data
+    end
+
+    alias as_json to_h
+
+    def to_json(*args)
+      as_json.to_json(*args)
+    end
+
     def self.relationship(property, cls, multiple: false)
       unless defined?(@relationships)
         @relationships = []

@@ -1,3 +1,4 @@
+require 'json'
 require_relative 'object'
 require_relative 'user'
 require_relative 'account'
@@ -22,6 +23,10 @@ module CFC
     def records
       data = @api.get_json("zones/#{id}/dns_records")['result']
       data.map { |r| CFC::Record.new(r) }
+    end
+
+    def to_json(*args)
+      "com.cloudflare.api.account.zone.#{id}"
     end
   end
 end

@@ -24,6 +24,12 @@ module CFC
       @api.put_to_json("user/tokens/#{identifier}/value", {})
     end
 
+    def self.create(name:, policies:, not_before: nil, expires_on: nil, condition: nil)
+      data = { name: name, policies: policies, not_before: not_before, expires_on: expires_on, condition: condition }
+      data = data.compact
+      new(@api.post_to_json('user/tokens', data)['result'])
+    end
+
     def details
       CFC::UserAPIToken.details(id)
     end
