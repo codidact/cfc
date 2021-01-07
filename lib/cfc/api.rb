@@ -53,9 +53,9 @@ module CFC
         headers.merge!({ 'Authentication' => "Bearer #{CFC::Config.instance.token}" })
       when :key
         headers.merge!({
-          'X-Auth-Key' => CFC::Config.instance.api_key,
+                         'X-Auth-Key' => CFC::Config.instance.api_key,
           'X-Auth-Email' => CFC::Config.instance.api_email
-        })
+                       })
       end
 
       rq = cls.new(uri, headers)

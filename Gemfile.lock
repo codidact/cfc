@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    cfc (0.1.3)
+    cfc (0.1.4)
 
 GEM
   remote: https://rubygems.org/

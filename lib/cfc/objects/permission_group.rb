@@ -9,7 +9,7 @@ module CFC
       @api.get_json('user/tokens/permission_groups')['result'].map { |pg| new(pg) }
     end
 
-    def to_json(*args)
+    def to_json(*_args)
       JSON.dump({ id: id, name: name })
     end
   end

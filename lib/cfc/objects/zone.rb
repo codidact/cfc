@@ -25,7 +25,7 @@ module CFC
       data.map { |r| CFC::Record.new(r) }
     end
 
-    def to_json(*args)
+    def to_json(*_args)
       "com.cloudflare.api.account.zone.#{id}"
     end
   end
