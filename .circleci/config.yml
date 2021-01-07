@@ -59,7 +59,8 @@ jobs:
       - run:
           name: Push gem
           command: |
-            gem push *.gem && gem push *.gem --host https://rubygems.pkg.github.com/codidact --key github || exit 0
+            gem push *.gem || true
+            gem push *.gem --host https://rubygems.pkg.github.com/codidact --key github || true
 
 workflows:
   test_push:
