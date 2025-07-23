@@ -56,6 +56,8 @@ module CFC
                          'X-Auth-Key' => CFC::Config.instance.api_key,
           'X-Auth-Email' => CFC::Config.instance.api_email
                        })
+      else
+        raise CFC::Errors::ConfigurationError, 'Incorrect configuration parameters to set auth method'
       end
 
       rq = cls.new(uri, headers)

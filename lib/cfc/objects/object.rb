@@ -40,8 +40,8 @@ module CFC
 
     alias as_json to_h
 
-    def to_json(*args)
-      as_json.to_json(*args)
+    def to_json(*)
+      as_json.to_json(*)
     end
 
     def self.relationship(property, cls, multiple: false)
@@ -52,9 +52,9 @@ module CFC
     end
 
     def self.opts(bind)
-      bind.local_variables.map do |var|
+      bind.local_variables.to_h do |var|
         [var, bind.local_variable_get(var)]
-      end.to_h
+      end
     end
 
     private
