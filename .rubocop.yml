@@ -1,7 +1,7 @@
 # This file is maintained in alphabetic order by class name (Layout, Metrics, Style) first, then by key name.
 
 AllCops:
-  TargetRubyVersion: 2.4
+  TargetRubyVersion: 3.2
   Exclude:
     - 'config/**/*'
     - 'db/**/*'

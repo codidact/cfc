@@ -9,7 +9,7 @@ module CFC
     def self.build(effect:, resources:, permission_groups:)
       new(JSON.parse(JSON.dump({
         effect: effect,
-        resources: resources&.map { |k, v| [k.to_json, v] }&.to_h,
+        resources: resources&.transform_keys(&:to_json),
         permission_groups: permission_groups
       }.compact)))
     end

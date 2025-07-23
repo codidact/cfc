@@ -8,9 +8,10 @@ Gem::Specification.new do |s|
   s.description   = 'Simple API library for interacting with the Cloudflare API. See GitHub for usage details: ' \
                     'https://github.com/codidact/cfc'
   s.authors       = ['The Codidact Foundation']
-  s.email         = 'gems@codidact.org'
+  s.email         = 'info@codidact.org'
   s.homepage      = 'https://github.com/codidact/cfc'
   s.files         = Dir['{lib}/**/*', 'LICENSE', 'README.md']
   s.require_paths = ['lib']
-  s.required_ruby_version = '>= 3'
+  s.required_ruby_version = '3.2'
+  s.metadata['rubygems_mfa_required'] = 'true'
 end

@@ -4,4 +4,4 @@ ruby '>=3'
 
 gemspec
 
-gem 'rubocop', '~> 1.5'
+gem 'rubocop', '~> 1.78'

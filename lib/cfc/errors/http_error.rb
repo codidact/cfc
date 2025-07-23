@@ -6,7 +6,7 @@ module CFC
       attr_reader :request, :response
 
       def initialize(request, response)
-        super "Cloudflare API request returned HTTP #{response.code}"
+        super("Cloudflare API request returned HTTP #{response.code}")
         @request = request
         @response = response
       end

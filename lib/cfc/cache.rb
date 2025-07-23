@@ -1,4 +1,3 @@
-require 'ostruct'
 require 'date'
 
 module CFC
@@ -16,11 +15,11 @@ module CFC
     end
 
     def []=(key, value)
-      @cache[key] = OpenStruct.new(data: value, expiry: nil)
+      @cache[key] = { data: value, expiry: nil }
     end
 
     def write(key, value, expiry: nil)
-      @cache[key] = OpenStruct.new(data: value, expiry: expiry)
+      @cache[key] = { data: value, expiry: expiry }
     end
 
     def read(key)
