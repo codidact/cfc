@@ -12,6 +12,6 @@ Gem::Specification.new do |s|
   s.homepage      = 'https://github.com/codidact/cfc'
   s.files         = Dir['{lib}/**/*', 'LICENSE', 'README.md']
   s.require_paths = ['lib']
-  s.required_ruby_version = '3.2'
+  s.required_ruby_version = '>=3.2'
   s.metadata['rubygems_mfa_required'] = 'true'
 end
